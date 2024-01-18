@@ -26,7 +26,7 @@ if [ -f "$ISYAY" ]; then
     yay -Syu
 else
     echo -e "Yay was not located.\n"
-    read -n1 -rep 'Would you like to install yay? (y,N)' YAY
+    read -n1 -rep 'Would you like to install yay? (y,N) :: ' YAY
     if [[ $YAY == "Y" || $YAY == "y" ]]; then
         git clone https://aur.archlinux.org/yay.git
         cd yay
@@ -145,7 +145,7 @@ VIZ=(
     xfce4-settings # xfce tools, needed to set GTK theme
 )
 
-read -n1 -rep $'[\e[1;33mACTION\e[0m] - Would you like to install the packages? (y,N)' INST
+read -n1 -rep $'[\e[1;33mACTION\e[0m] - Would you like to install the packages? (y,N) :: ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
     # update the DB first
     echo -e "$COK - Updating System"
@@ -285,7 +285,7 @@ fi
 
 
 ###======== Copy Config Files ========###
-read -n1 -rep '[\e[1;33mACTION\e[0m] - Would you like to copy config files? (y,N)' CFG
+read -n1 -rep '[\e[1;33mACTION\e[0m] - Would you like to copy config files? (y,N) :: ' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "Copying config files...\n"
     cp -R hypr ~/.config/
@@ -309,7 +309,7 @@ fi
 ###======== Script is done ========###
 echo -e "Setup had completed.\n"
 echo -e "You can now start using Hyprland, Note some services or packages might not work correctly until a reboot."
-read -n1 -rep 'Would you like to use Hyprland now? esle the system will reboot (y,N)' HYP
+read -n1 -rep 'Would you like to use Hyprland now? esle the system will reboot (y,N) :: ' HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
     sudo systemctl start sddm
 else
