@@ -39,10 +39,13 @@ else
 fi
 
 ###======== Install the Rust toolchain  ========###
-echo -n1 -rep '[\e[1;33mACTION\e[0m] - Installing the Rust toolchain?, (Rust is neede for some of the pakages require rust as an dependecie).'
-sleep 1
-echo -e "Strating Rust installation"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+ISRUST=~/.cargo/bin/rustup
+if [ -f "$ISRUST" ]; then
+    echo -e "Rustup detected, Moving on"
+else
+    echo -n1 -rep '[\e[1;33mACTION\e[0m] - Installing the Rust toolchain?, (Rust is needed for some of the pakages require rust as an dependecie).'
+    sleep 1
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ###======== Install all of the pacakges ========####
 DEP=( # Core dependencies hyprland on arch
