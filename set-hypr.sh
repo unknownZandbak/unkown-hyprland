@@ -87,7 +87,8 @@ HYPR=(
     hyprland # The Hyprland Compositor
     sddm # Display manager
     qt5-wayland # Qt for wayland
-    qt6-wayland # More Qt    waybar-hyprland # Waybar with Hyprland Support
+    qt6-wayland # More Qt 
+    waybar-hyprland # Waybar with Hyprland Support
     xdg-desktop-portal-hyprland # xdg-desktop-portal backend for hyprland
     xdg-utils # Extra tools to applications with desktop integration tasks
     polkit-kde-agent # needed to get superuser access on some graphical appliaction
