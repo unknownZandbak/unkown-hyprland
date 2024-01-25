@@ -20,8 +20,7 @@ INSTLOG="install.log"
 
 
 ####======== Check for yay ========####
-ISYAY=/sbin/yay
-if [ -f "$ISYAY" ]; then
+if command -v yay &> /dev/null; then
     echo -e "Yay was located, updating system pakages and moving on.\n"
     yay -Syu
 else
@@ -39,13 +38,13 @@ else
 fi
 
 ###======== Install the Rust toolchain  ========###
-ISRUST=~/.cargo/bin/rustup
-if [ -f "$ISRUST" ]; then
+if command -v rustup &> /dev/null; then
     echo -e "Rustup detected, Moving on"
 else
     echo -n1 -rep '[\e[1;33mACTION\e[0m] - Installing the Rust toolchain?, (Rust is needed for some of the pakages require rust as an dependecie).'
     sleep 1
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+fi
 
 ###======== Install all of the pacakges ========####
 DEP=( # Core dependencies hyprland on arch
