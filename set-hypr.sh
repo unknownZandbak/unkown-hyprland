@@ -151,9 +151,6 @@ VIZ=(
 
 read -n1 -rep $'[\e[1;33mACTION\e[0m] - Would you like to install the packages? (y,N) :: ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
-    # update the DB first
-    echo -e "$COK - Updating System"
-    yay -Syu --noconfirm &>> $INSTLOG
 
     #======== Stage 0 ========#
     echo -e "\n$CNT - Stage 0 - Checking for core dependencies, this may take a while..."
@@ -198,7 +195,6 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     for SOFTWR in "${AUDIO[@]}"
     do
         #First lets see if the package is there
-
         if yay -Qs $SOFTWR > /dev/null ; then
             echo -e "$COK - $SOFTWR is already installed."
         else
@@ -316,6 +312,4 @@ echo -e "You can now start using Hyprland, Note some services or packages might 
 read -n1 -rep 'Would you like to use Hyprland now? esle the system will reboot (y,N) :: ' HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
     sudo systemctl start sddm
-else
-    sudo reboot
 fi
