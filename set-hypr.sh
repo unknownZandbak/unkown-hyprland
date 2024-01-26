@@ -21,17 +21,28 @@ if command -v yay &> /dev/null; then
     echo -e "Yay was located, updating system pakages and moving on.\n"
     yay -Syu
 else
-    echo -e "Yay was not located.\n"
-    read -n1 -rep 'Would you like to install yay? (y,N) :: ' YAY
-    if [[ $YAY == "Y" || $YAY == "y" ]]; then
-        git clone https://aur.archlinux.org/yay.git
-        cd yay
-        makepkg -si --noconfirm &>> ../$INSTLOG
-        cd ..
-    else
-        echo -e "Yay is required for this script, please run the script again or install manualy."
-        exit
-    fi
+    echo -e "Yay was not located."
+    while true; do
+        echo -e "$CAC - Would you like to install yay? (Y,n)"
+        read -rep ":: " YAY
+        case $YAY in
+            [Yy]|"")
+                echo -e "$CNT - Installing Yay."
+                git clone https://aur.archlinux.org/yay.git
+                cd yay
+                makepkg -si --noconfirm &>> ../$INSTLOG
+                cd ..
+                break
+                ;;
+            [Nn])
+                echo -e "$CAT - Yay is required for this script, please run the script again or install manualy."
+                exit
+                ;;
+            *)
+                echo -e "$CAT - Unknown input, please enter a valid input."
+                ;;
+        esac
+    done
 fi
 
 ###======== Install the Rust toolchain  ========###
