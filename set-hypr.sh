@@ -157,7 +157,7 @@ VIZ=(
 )
 
 PACK_INST=false
-while $PACK_INST; do
+while not $PACK_INST; do
     echo -e "$CAC - Would you like to install the packages? (Y,n)"
     read -rep ":: " INST
     case $INST in
@@ -308,31 +308,46 @@ function install_packages() {
 }
 
 ###======== Copy Config Files ========###
-read -n1 -rep '[\e[1;33mACTION\e[0m] - Would you like to copy config files? (y,N) :: ' CFG
-if [[ $CFG == "Y" || $CFG == "y" ]]; then
-    echo -e "Copying config files...\n"
-    cp -R hypr ~/.config/
-    cp -R fish ~/.config/
-    cp -R kitty ~/.config/
-    cp -R waybar ~/.config/
-    cp -R swaylock ~/.config/
+echo -e "$CAT - Would you like to copy config files? (Y,n)"
+read -rep ":: " CFG
+while true; do
+    case $CFG in
+        [Yy]|"")
+            echo -e "Copying config files...\n"
+            cp -R hypr ~/.config/
+            cp -R fish ~/.config/
+            cp -R kitty ~/.config/
+            cp -R waybar ~/.config/
+            cp -R swaylock ~/.config/
 
-    # Set some files as exacutable
-    echo -e "$CNT - Setting some file as executable."
-    chmod +x ~/.config/hypr/scripts/bgaction
-    chmod +x ~/.config/hypr/scripts/xdg-portal-hyprland
-    chmod +x ~/.config/waybar/scripts/waybar-wttr.py
-    chmod +x ~/.config/waybar/scripts/baraction
-    chmod +x ~/.config/waybar/scripts/update-sys
+            # Set some files as exacutable
+            echo -e "$CNT - Setting some file as executable."
+            chmod +x ~/.config/hypr/scripts/bgaction
+            chmod +x ~/.config/hypr/scripts/xdg-portal-hyprland
+            chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+            chmod +x ~/.config/waybar/scripts/baraction
+            chmod +x ~/.config/waybar/scripts/update-sys
 
-    # copy destop info to wayland sessions
-    sudo cp hypr/hyprland.desktop /usr/share/wayland-sessions/
-fi
+            # copy destop info to wayland sessions
+            sudo cp hypr/hyprland.desktop /usr/share/wayland-sessions/
+            break
+            ;;
+        [Nn])
+            echo "Skipping config transfer."
+            break
+            ;;
+        *)
+            echo -e "$CAT - Unknown input, please enter a valid input."
+            ;;
+    esac
+done
+
 
 ###======== Script is done ========###
 echo -e "Setup had completed.\n"
 echo -e "You can now start using Hyprland, Note some services or packages might not work correctly until a reboot."
-read -n1 -rep 'Would you like to use Hyprland now? esle the system will reboot (y,N) :: ' HYP
+echo -e "Would you like to use Hyprland now? esle the system will reboot (Y,n)"
+read -rep ":: " HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
     sudo systemctl start sddm
 fi
