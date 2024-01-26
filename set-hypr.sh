@@ -2,13 +2,10 @@
 
 # The follwoing will attempt to install all needed packages to run Hyprland
 # This is a quick and dirty script there is no error checking
-# This script is meant to run on a clean fresh system
+# This script is meant to run on a clean fresh "minimal" arch install
 
 # Credits to SolDoesTech and his hyprland installer project: https://github.com/SolDoesTech/hyprland
-# I took his script for the majority kept it the same but changed some aspects,
-# like the ROG software and putting all the pakages in more readable lists.
-# Aswell as some personal changes for themes and pakages
-
+# I took his script as basis for this project
 # set some colors
 CNT="[\e[1;36mNOTE\e[0m]"
 COK="[\e[1;32mOK\e[0m]"
