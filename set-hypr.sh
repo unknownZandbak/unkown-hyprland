@@ -21,7 +21,7 @@ if command -v yay &> /dev/null; then
     echo -e "Yay was located, updating system pakages and moving on.\n"
     yay -Syu
 else
-    echo -e "Yay was not located."
+    echo -e "$CNT - Yay was not located."
     while true; do
         echo -e "$CAC - Would you like to install yay? (Y,n)"
         read -rep ":: " YAY
@@ -47,9 +47,9 @@ fi
 
 ###======== Install the Rust toolchain  ========###
 if command -v rustup &> /dev/null; then
-    echo -e "Rustup detected, Moving on"
+    echo -e "$CNT - Rustup detected, Moving on"
 else
-    echo -n1 -rep '[\e[1;33mACTION\e[0m] - Installing the Rust toolchain?, (Rust is needed for some of the pakages require rust as an dependecie).'
+    echo -n1 -rep "$CAT - Installing the Rust toolchain?, (Rust is needed for some of the pakages require rust as an dependecie)."
     sleep 1
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 fi
@@ -156,9 +156,26 @@ VIZ=(
     xfce4-settings # xfce tools, needed to set GTK theme
 )
 
-read -n1 -rep $'[\e[1;33mACTION\e[0m] - Would you like to install the packages? (y,N) :: ' INST
-if [[ $INST == "Y" || $INST == "y" ]]; then
+PACK_INST=false
+while $PACK_INST; do
+    echo -e "$CAC - Would you like to install the packages? (Y,n)"
+    read -rep ":: " INST
+    case $INST in
+        [Yy]|"")
+            install_packages
+            PACK_INST=true
+            ;;
+        [Nn])
+            echo -e "$CAT - Stopping installation."
+            break
+            ;;
+        *)
+            echo -e "$CAT - Invalid input, please enter a valid anwser"
+            ;;
+    esac
+done
 
+function install_packages() {
     #======== Stage 0 ========#
     echo -e "\n$CNT - Stage 0 - Checking for core dependencies, this may take a while..."
     for SOFTWR in "${DEP[@]}"
@@ -234,27 +251,27 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
                 exit
             fi
         fi
-      done
+        done
 
-      #======== Stage 4 ========#
-      echo -e "\n$CNT - Stage 4 - Installing additional tools and utilities, this may take a while..."
-      for SOFTWR in "${UTIL[@]}"
-      do
-          #First lets see if the package is there
+    #======== Stage 4 ========#
+    echo -e "\n$CNT - Stage 4 - Installing additional tools and utilities, this may take a while..."
+    for SOFTWR in "${UTIL[@]}"
+    do
+        #First lets see if the package is there
 
-          if yay -Qs $SOFTWR > /dev/null ; then
-              echo -e "$COK - $SOFTWR is already installed."
-          else
-              echo -e "$CNT - Now installing $SOFTWR ..."
-              yay -S --noconfirm $SOFTWR &>> $INSTLOG
-              if yay -Qs $SOFTWR > /dev/null ; then
-                  echo -e "$COK - $SOFTWR was installed."
-              else
-                  echo -e "$CER - $SOFTWR install had failed, please check the install.log"
-                  exit
-              fi
-          fi
-      done
+        if yay -Qs $SOFTWR > /dev/null ; then
+            echo -e "$COK - $SOFTWR is already installed."
+        else
+            echo -e "$CNT - Now installing $SOFTWR ..."
+            yay -S --noconfirm $SOFTWR &>> $INSTLOG
+            if yay -Qs $SOFTWR > /dev/null ; then
+                echo -e "$COK - $SOFTWR was installed."
+            else
+                echo -e "$CER - $SOFTWR install had failed, please check the install.log"
+                exit
+            fi
+        fi
+    done
 
     #======== Stage 5 ========#
     echo -e "\n$CNT - Stage 5 - Installing theme and visual related tools and utilities, this may take a while..."
@@ -288,8 +305,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     # Clean out other portals
     echo -e "$CNT - Cleaning out conflicting xdg portals..."
     yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk &>> $INSTLOG
-fi
-
+}
 
 ###======== Copy Config Files ========###
 read -n1 -rep '[\e[1;33mACTION\e[0m] - Would you like to copy config files? (y,N) :: ' CFG
